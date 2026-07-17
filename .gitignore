@@ -1,0 +1,28 @@
+# Entorno virtual
+.venv/
+
+# Caché de Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+
+# Variables de entorno
+.env
+
+# Configuración de VS Code
+.vscode/
+
+# Archivos de pytest
+.pytest_cache/
+
+# Archivos de sistema de Windows
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+
+# Cobertura
+.coverage
+htmlcov/
+

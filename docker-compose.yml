@@ -1,0 +1,18 @@
+services:
+  postgres:
+    image: postgres:17
+
+    container_name: csp-postgres
+
+    environment:
+      POSTGRES_DB: csp_db
+      POSTGRES_USER: csp_user
+      POSTGRES_PASSWORD: csp_password
+    
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
