@@ -19,3 +19,8 @@ def create_plant(session:Session, plant_data:PlantCreate) -> Plant:
 
 def get_plants(session: Session):
     return session.query(Plant).all()
+
+
+def get_plant_by_id(session:Session, plant_id:int):
+    return session.query(Plant).filter(Plant.id==plant_id).first()
+#consulta la tabla plants, quédate solo con la fila cuyo id sea igual al que me han pasado, devuelve el primer resultado o None si no hay ninguno.

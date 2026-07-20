@@ -29,8 +29,6 @@ def forecast():
             detail= "Servicio meteorológico no disponible"
         )
 
-
-
 @app.post("/plants")
 def create_plant(plant: PlantCreate, session: Session = Depends(get_session)):
                                 # Necesita una Session y le dice a FastAPI que la consiga
@@ -40,4 +38,16 @@ def create_plant(plant: PlantCreate, session: Session = Depends(get_session)):
 @app.get("/plants")
 def get_plants(session: Session=Depends(get_session)):
     return plant_service.get_plants(session)
+
+@app.get("/plants/{plant_id}")
+def get_plant_by_id (plant_id: int, session:Session=Depends(get_session)):
+    plant= plant_service.get_plant_by_id(session, plant_id)
+
+    if plant is None:
+        raise HTTPException(
+            status_code=404,
+            detail= "Plant Not Found"
+        ) 
+
+    return plant
 
