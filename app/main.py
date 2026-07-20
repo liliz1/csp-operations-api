@@ -3,7 +3,7 @@ from app.services import weather_service
 from app.schemas.forecast import ForecastResponse
 from sqlalchemy.orm import Session
 from app.core.session import SessionLocal
-from app.schemas.plant import PlantCreate
+from app.schemas.plant import PlantCreate, PlantUpdate
 from app.services import plant_service
 from app.core.dependencies import get_session
 
@@ -51,3 +51,22 @@ def get_plant_by_id (plant_id: int, session:Session=Depends(get_session)):
 
     return plant
 
+@app.put("/plants/{plant_id}")
+def update_plant( plant_id:int, plant_data: PlantUpdate, session:Session=Depends(get_session)):
+    plant = plant_service.update_plant(session, plant_id, plant_data)
+    if plant is None:
+        raise HTTPException(
+            status_code=404,
+            detail= "Plant Not Found"
+        )
+    return plant
+
+@app.delete("/plants/{plant_id}")
+def delete_plant(plant_id:int, session: Session=Depends(get_session)):
+    plant = plant_service.delete_plant(session, plant_id)
+    if plant is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Plant Not Found"
+        )
+    return {"message": "Plant deleted successfully"}

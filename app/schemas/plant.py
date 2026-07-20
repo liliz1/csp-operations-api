@@ -6,3 +6,6 @@ class PlantCreate(BaseModel):
     longitude: float
     installed_power_mw: float
 
+class PlantUpdate(BaseModel):
+    name: str
+    installed_power_mw: float
