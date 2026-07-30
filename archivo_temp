@@ -1,0 +1,4 @@
+from app.core.config import settings
+
+print(settings.postgres_user)
+print(settings.postgres_host)
