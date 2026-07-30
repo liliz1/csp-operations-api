@@ -1,11 +1,13 @@
 import httpx
 
-def get_current_weather():
+def get_current_weather(latitude, longitude):
     url="https://api.open-meteo.com/v1/forecast"
     
     params = {
-        "latitude": 37.39,
-        "longitude": -5.99,
+        # "latitude": 37.39,
+        # "longitude": -5.99,
+        "latitude": latitude,
+        "longitude": longitude,
         #"hourly": ["temperature_2m", "precipitation", "wind_speed_10m"],
 	    "current": ["temperature_2m", "wind_speed_10m" ,  "cloud_cover"],
         #"current2": "temperature_2m,wind_speed_10m,cloud_cover"

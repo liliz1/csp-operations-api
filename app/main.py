@@ -4,7 +4,7 @@ from app.schemas.forecast import ForecastResponse
 from sqlalchemy.orm import Session
 from app.core.session import SessionLocal
 from app.schemas.plant import PlantCreate, PlantUpdate
-from app.services import plant_service
+from app.services import plant_service, plant_operations_service
 from app.core.dependencies import get_session
 
 app = FastAPI()
@@ -19,15 +19,15 @@ def health():
 }
 
 # con response_model, FastAPI validará automáticamente la respuesta(debe cumplir el contrato ForecastResponse) antes de enviarla
-@app.get("/forecast", response_model=ForecastResponse)
-def forecast():
-    try:
-        return weather_service.get_forecast()
-    except RuntimeError:
-        raise HTTPException(
-            status_code=503,
-            detail= "Servicio meteorológico no disponible"
-        )
+# @app.get("/forecast", response_model=ForecastResponse)
+# def forecast():
+#     try:
+#         return weather_service.get_forecast()
+#     except RuntimeError:
+#         raise HTTPException(
+#             status_code=503,
+#             detail= "Servicio meteorológico no disponible"
+#         )
 
 @app.post("/plants")
 def create_plant(plant: PlantCreate, session: Session = Depends(get_session)):
@@ -70,3 +70,13 @@ def delete_plant(plant_id:int, session: Session=Depends(get_session)):
             detail="Plant Not Found"
         )
     return {"message": "Plant deleted successfully"}
+
+@app.get("/plants/{plant_id}/forecast")
+def forecast(plant_id:int, session:Session=Depends(get_session)):
+    data = plant_operations_service.get_forecast_for_plant(session,plant_id)
+    if data is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Plant Not Found"
+        )
+    return data
