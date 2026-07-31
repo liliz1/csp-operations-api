@@ -17,7 +17,7 @@ def create_plant(session:Session, plant_data:PlantCreate) -> Plant:
 
     return plant
 
-def get_plants(session: Session):
+def get_all_plants(session: Session):
     return session.query(Plant).all()
 
 

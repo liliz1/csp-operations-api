@@ -37,7 +37,7 @@ def create_plant(plant: PlantCreate, session: Session = Depends(get_session)):
 
 @app.get("/plants")
 def get_plants(session: Session=Depends(get_session)):
-    return plant_service.get_plants(session)
+    return plant_service.get_all_plants(session)
 
 @app.get("/plants/{plant_id}")
 def get_plant_by_id (plant_id: int, session:Session=Depends(get_session)):
