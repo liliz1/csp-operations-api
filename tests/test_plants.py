@@ -123,6 +123,57 @@ def test_put_plant():
             }
         )
         assert response.status_code == 404
-        
+
         data = response.json()
         assert data["detail"] == "Plant Not Found"
+
+    def test_delete_plant_by_id():
+        # Arrange. Crear una planta
+        create_response = client.post(
+            "/plants",
+            json={
+                "name":"Plant 3",
+                "latitude": 40.44,
+                "longitude": -28.25,
+                "installed_power_mw": 60.0,
+            }
+        )
+        # comprobamos que se ha creado la planta correctamente
+        assert create_response.status_code==200
+        # obtenemos el id
+        plant_id = create_response.json()["id"]
+        # Act. Delete
+        response = client.delete(f"/plants/{plant_id}")
+        # Assert. Comprobar la respuesta
+        assert response.status_code == 200
+        # Comprobar que ya no existe
+        get_response = client.get(f"/plants/{plant_id}")
+        assert get_response.status_code == 404
+
+        
+def test_delete_plant_not_found():
+    response = client.delete("/plants/999999")
+    assert response.status_code == 404
+    data = response.json()
+    assert data["detail"] == "Plant Not Found"
+
+
+def test_get_forecast():
+    # Arragenge. Crear una planta
+    create_response=client.post(
+            "/plants",
+            json={
+                "name":"Plant 4",
+                "latitude": 66.44,
+                "longitude": -38.25,
+                "installed_power_mw": 70.0,
+            }
+        )
+    # comprobamos que se ha creado la planta correctamente
+    assert create_response.status_code == 200
+    # Obtener el id
+    plant_id = create_response.json()["id"]
+    # Act. Hacer GET /plants/{id}/forecast
+    response = client.get(f"/plants/{plant_id}/forecast")
+    # Assert. Comprobar que devuelve 200
+    assert response.status_code==200
